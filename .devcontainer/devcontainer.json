@@ -38,5 +38,5 @@
       ]
     }
   },
-  "postCreateCommand": "npm init -y && npm install"
+   "postCreateCommand": "zsh -c 'source $HOME/.nvm/nvm.sh && nvm use default && npm init -y && npm install'"
 }
