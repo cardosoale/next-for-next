@@ -33,10 +33,8 @@
         "natqe.reload",
         "bradlc.vscode-tailwindcss",
         "gruntfuggly.todo-tree",
-        "styled-components.vscode-styled-components",
-        "ms-vscode-remote.remote-containers"
+        "styled-components.vscode-styled-components"
       ]
     }
-  },
-   "postCreateCommand": "zsh -c 'source $HOME/.nvm/nvm.sh && nvm use default && npm init -y && npm install'"
+  }
 }
