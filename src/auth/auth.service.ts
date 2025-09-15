@@ -34,11 +34,11 @@ export class AuthService {
       sub: user.id,
       email: user.email,
     };
-    const acessToken = await this.jwtService.signAsync(jwtPayload);
+    const accessToken = await this.jwtService.signAsync(jwtPayload);
 
     user.forceLogout = false;
     await this.userService.save(user);
 
-    return { acessToken };
+    return { accessToken };
   }
 }
