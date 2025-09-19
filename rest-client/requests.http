@@ -9,7 +9,7 @@ Content-Type: application/json
 
 {
   "email": "alexandrepc@email.com",
-  "password": "123"
+  "password": "123456"
 }
 
 ### Read one user
@@ -25,8 +25,8 @@ Content-Type: application/json
 
 {
   "name": "Alexandre",
-  "email": "alexandrepc@email.com",
-  "password": "123"
+  "email": "apc@email.com",
+  "password": "123456"
 }
 
 ### Update user
@@ -37,6 +37,16 @@ Content-Type: application/json
 
 {
 "name": "Alexandre",
-  "email": "alexandrepc@email.com"
+"email": "alexandrepc@email.com"
+}
 
+### Update user password
+# @name updateUserPassword
+PATCH {{baseUrl}}/user/me/password
+Authorization: Bearer {{jwtToken}}
+Content-Type: application/json
+
+{
+"currentPassword": "123456",
+"newPassword": "123456"
 }
