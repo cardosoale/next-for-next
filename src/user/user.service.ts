@@ -1,9 +1,15 @@
-import { ConflictException, Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { User } from './entities/user.entity';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { Repository } from 'typeorm';
-import { HashingService } from 'src/common/hashing/hashing.service';
+import { User } from './entities/user.entity';
+import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
+import { HashingService } from 'src/common/hashing/hashing.service';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UserService {
@@ -13,17 +19,30 @@ export class UserService {
     private readonly hashingService: HashingService,
   ) {}
 
-  async create(dto: CreateUserDto) {
-    const exists = await this.userRepository.exists({
-      where: {
-        email: dto.email,
-      },
+  async failIfEmailExists(email: string) {
+    const exists = await this.userRepository.existsBy({
+      email,
     });
-    if (exists) {
-      throw new ConflictException('Email já existe na base de dados');
-    }
-    const hashedPassword = await this.hashingService.hash(dto.password);
 
+    if (exists) {
+      throw new ConflictException('E-mail já existe');
+    }
+  }
+
+  async findOneByOrFail(userData: Partial<User>) {
+    const user = await this.userRepository.findOneBy(userData);
+
+    if (!user) {
+      throw new NotFoundException('Usuário não encontrado');
+    }
+
+    return user;
+  }
+
+  async create(dto: CreateUserDto) {
+    await this.failIfEmailExists(dto.email);
+
+    const hashedPassword = await this.hashingService.hash(dto.password);
     const newUser: CreateUserDto = {
       name: dto.name,
       email: dto.email,
@@ -40,6 +59,28 @@ export class UserService {
 
   findById(id: string) {
     return this.userRepository.findOneBy({ id });
+  }
+
+  async update(id: string, dto: UpdateUserDto) {
+    // Garante que pelo menos um campo foi enviado para atualização
+    if (!dto.name && !dto.email) {
+      throw new BadRequestException(
+        'Pelo menos um campo (nome ou email) deve ser enviado para atualização.',
+      );
+    }
+
+    const user = await this.findOneByOrFail({ id });
+
+    user.name = dto.name ?? user.name;
+
+    // Se um novo email for fornecido e for diferente do atual, verifica se já existe
+    if (dto.email && dto.email !== user.email) {
+      await this.failIfEmailExists(dto.email);
+      user.email = dto.email;
+      user.forceLogout = true;
+    }
+
+    return this.save(user);
   }
 
   save(user: User) {
