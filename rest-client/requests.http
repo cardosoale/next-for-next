@@ -12,11 +12,6 @@ Content-Type: application/json
   "password": "123456"
 }
 
-### Read one user
-# @name readOneUser
-GET {{baseUrl}}/user/123
-Authorization: Bearer {{jwtToken}}
-
 
 ### Create user
 # @name createUser
@@ -25,7 +20,7 @@ Content-Type: application/json
 
 {
   "name": "Alexandre",
-  "email": "apc@email.com",
+  "email": "alexandrepc@email.com",
   "password": "123456"
 }
 
@@ -50,3 +45,13 @@ Content-Type: application/json
 "currentPassword": "123456",
 "newPassword": "123456"
 }
+
+### Read one user
+# @name readOneUser
+GET {{baseUrl}}/user/me
+Authorization: Bearer {{jwtToken}}
+
+### Delete one user
+# @name deleteOneUser
+DELETE {{baseUrl}}/user/me
+Authorization: Bearer {{jwtToken}}
