@@ -11,7 +11,7 @@
   "editor.tabSize": 2,
   "explorer.compactFolders": false,
   "editor.fontLigatures": true,
-  "editor.fontFamily": "Fira Code",
+  "editor.fontFamily": "JetBrains Mono",
   "editor.stickyScroll.enabled": true,
   "code-runner.clearPreviousOutput": true,
   "code-runner.ignoreSelection": true,
