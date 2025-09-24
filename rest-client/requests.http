@@ -108,7 +108,7 @@ Content-Type: application/json
 Authorization: Bearer {{jwtToken}}
 
 {
-  "title": "novissimo - Título do post",
+  "title": "teste - Título do post",
   "excerpt": "NOVO - Excerto",
   "content": "NOVO - Conteúdo",
   "published": true
