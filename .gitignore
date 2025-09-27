@@ -1,6 +1,7 @@
 db.sqlite
 /dev
 /uploads
+/.zed
 
 # compiled output
 /dist
